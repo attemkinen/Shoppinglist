@@ -1,5 +1,4 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, push, ref, onValue } from "firebase/database";
+import { database, ref, push, onValue } from "./firebase";
 import { useState, useEffect } from "react";
 import {
   Button,
@@ -12,24 +11,6 @@ import {
 import appStyles from "./styles/appStyles";
 
 export default function App() {
-  const firebaseConfig = {
-    apiKey: "AIzaSyDdXbCF3ZamYOn5svzQ1qczcPuafgkkvnw",
-    authDomain: "shoppinglist-d4b4e.firebaseapp.com",
-    databaseURL:
-      "https://shoppinglist-d4b4e-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "shoppinglist-d4b4e",
-    storageBucket: "shoppinglist-d4b4e.appspot.com",
-    messagingSenderId: "283182755323",
-    appId: "1:283182755323:web:72e55d5836baa2ef4a2f5e",
-    measurementId: "G-27QFDX7HCT",
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
-
-  ref(database, "items/");
-
   const [product, setProduct] = useState({
     title: "",
     amount: "",
@@ -94,12 +75,12 @@ export default function App() {
             <Text style={appStyles.itemAmount}>{item.amount + " kpl"}</Text>
           </View>
         )}
-        keyExtractor={(item, index) => index.toString() + (index %2).toString()}
+        keyExtractor={(item, index) =>
+          index.toString() + (index % 2).toString()
+        }
         ItemSeparatorComponent={() => <View style={appStyles.separator} />}
         numColumns={2}
       />
     </View>
   );
 }
-
-
