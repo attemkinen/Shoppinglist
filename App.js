@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import {
   Button,
   FlatList,
-  StyleSheet,
+  appStylesheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import appStyles from "./styles/appStyles";
 
 export default function App() {
   const firebaseConfig = {
@@ -66,81 +67,39 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={appStyles.container}>
       <TextInput
-        style={styles.input}
+        style={appStyles.input}
         placeholder="title"
         value={product.title}
         onChangeText={handleTitleChange}
       />
       <TextInput
-        style={styles.input}
+        style={appStyles.input}
         placeholder="Amount"
         value={product.amount}
         keyboardType="numeric"
         onChangeText={handleAmountChange}
       />
-      <View style={styles.buttonContainer}>
+      <View style={appStyles.buttonContainer}>
         <Button title="SAVE" onPress={saveItem} />
         <Button title="CLEAR" onPress={handleClear} />
       </View>
-      <Text style={styles.resultText}>Ostoslista:</Text>
+      <Text style={appStyles.resultText}>Ostoslista:</Text>
       <FlatList
         data={items}
         renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
-            <Text style={styles.itemTitle}>{item.title}</Text>
-            <Text style={styles.itemAmount}>{item.amount + " kpl"}</Text>
+          <View style={appStyles.itemContainer}>
+            <Text style={appStyles.itemTitle}>{item.title}</Text>
+            <Text style={appStyles.itemAmount}>{item.amount + " kpl"}</Text>
           </View>
         )}
-        keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        keyExtractor={(item, index) => index.toString() + (index %2).toString()}
+        ItemSeparatorComponent={() => <View style={appStyles.separator} />}
+        numColumns={2}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 100,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginVertical: 8,
-    width: "80%",
-    paddingHorizontal: 8,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginLeft: 10,
-    padding: 10,
-    width: 150,
-  },
-  resultText: {
-    fontSize: 20,
-    marginTop: 16,
-    color: "blue",
-  },
-  FlatlistContainer: {
-    color: "blue",
-  },
-  itemContainer: {
-    padding: 10,
-    backgroundColor: "#FFF",
-    marginBottom: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#E0E0E0",
-  },
-  separator: {
-    height: 1,
-    width: "100%",
-    backgroundColor: "#CED0CE", 
-  },
-});
+
