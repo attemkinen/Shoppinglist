@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, push, ref, onValue } from "firebase/database";
+import { getDatabase, push, ref, onValue, remove } from "firebase/database";
 
 const apiKey = process.env.EXPO_PUBLIC_API_KEY
 const authDomain = process.env.EXPO_PUBLIC_AUTH_DOMAIN
@@ -26,4 +26,4 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 ref(database, "items/");
 
-export { database, ref, push, onValue };
+export { database, ref, push, onValue, remove };

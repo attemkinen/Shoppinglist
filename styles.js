@@ -13,19 +13,18 @@ const appStyles = StyleSheet.create({
     width: "95%",
     paddingHorizontal: 8,
     marginTop: 10,
-    borderBottomWidth: 1, 
-    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
+    borderBottomColor: "gray",
   },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     marginLeft: 10,
     padding: 10,
-    width: '90%',
-    
+    width: "90%",
   },
   button: {
-    width: '100%', // Tee nappulasta 100% kontainerin leveydestä
+    width: "100%",
   },
   resultText: {
     fontSize: 20,
@@ -50,6 +49,11 @@ const appStyles = StyleSheet.create({
   itemAmount: {
     fontSize: 14,
     color: "gray",
+  },
+  deleteButton: {
+    backgroundColor: "transparent", 
+    padding: 0, 
+    margin: 0,
   },
 });
 

@@ -1,4 +1,4 @@
-import { database, ref, push, onValue } from "./firebase";
+import { database, ref, push, onValue, remove } from "./firebase";
 import { useState, useEffect } from "react";
 import { FlatList, Text, View } from "react-native";
 import HeaderComponent from "./header";
@@ -21,7 +21,12 @@ export default function App() {
     const itemsRef = ref(database, "items/");
     onValue(itemsRef, (snapshot) => {
       const data = snapshot.val();
-      setItems(Object.values(data));
+      if (data) {
+        const itemsArray = Object.keys(data).map(key => ({ ...data[key], id: key }));
+        setItems(itemsArray);
+      } else {
+        setItems([]);
+      }
     });
   }, []);
 
@@ -37,6 +42,21 @@ export default function App() {
       ...prevState,
       amount: text,
     }));
+  };
+
+  const deleteItem = (itemId) => {
+    const itemRef = ref(database, `items/${itemId}`);
+    
+    remove(itemRef)
+      .then(() => {
+        console.log('Item deleted successfully');
+        // Päivitä tila hakemalla uudet tiedot
+        const updatedItems = items.filter(item => item.id !== itemId);
+        setItems(updatedItems);
+      })
+      .catch((error) => {
+        console.error('Error deleting item:', error);
+      });
   };
 
   return (
@@ -71,7 +91,8 @@ export default function App() {
         renderItem={({ item }) => (
           <View style={appStyles.itemContainer}>
             <Text style={appStyles.itemTitle}>{item.title}</Text>
-            <Text style={appStyles.itemAmount}>{item.amount}</Text>
+            <Text style={appStyles.itemAmount}>{item.amount}</Text> 
+            <Button onPress={() => deleteItem(item.id)} raised icon={{name: "delete", color: "red"}} buttonStyle={appStyles.deleteButton}/> 
           </View>
         )}
         keyExtractor={(item, index) =>
