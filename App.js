@@ -1,14 +1,10 @@
 import { database, ref, push, onValue } from "./firebase";
 import { useState, useEffect } from "react";
-import {
-  Button,
-  FlatList,
-  appStylesheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { FlatList, Text, View } from "react-native";
+import HeaderComponent from "./header";
 import appStyles from "./styles";
+import { Icon } from "@rneui/themed";
+import { Input, Button } from "@rneui/themed";
 
 export default function App() {
   const [product, setProduct] = useState({
@@ -19,10 +15,6 @@ export default function App() {
 
   const saveItem = () => {
     push(ref(database, "items/"), product);
-  };
-
-  const handleClear = () => {
-    setItems([]);
   };
 
   useEffect(() => {
@@ -49,37 +41,44 @@ export default function App() {
 
   return (
     <View style={appStyles.container}>
-      <TextInput
+      <HeaderComponent />
+      <Input
         style={appStyles.input}
-        placeholder="title"
+        label="Product"
+        placeholder="Product"
         value={product.title}
         onChangeText={handleTitleChange}
       />
-      <TextInput
+      <Input
         style={appStyles.input}
+        label="Amount"
         placeholder="Amount"
         value={product.amount}
-        keyboardType="numeric"
         onChangeText={handleAmountChange}
       />
       <View style={appStyles.buttonContainer}>
-        <Button title="SAVE" onPress={saveItem} />
-        <Button title="CLEAR" onPress={handleClear} />
+        <Button
+          raised
+          icon={{ name: "save" }}
+          onPress={saveItem}
+          title="SAVE"
+          buttonStyle={appStyles.button}
+        />
       </View>
-      <Text style={appStyles.resultText}>Ostoslista:</Text>
+
       <FlatList
         data={items}
         renderItem={({ item }) => (
           <View style={appStyles.itemContainer}>
             <Text style={appStyles.itemTitle}>{item.title}</Text>
-            <Text style={appStyles.itemAmount}>{item.amount + " kpl"}</Text>
+            <Text style={appStyles.itemAmount}>{item.amount}</Text>
           </View>
         )}
         keyExtractor={(item, index) =>
-          index.toString() + (index % 2).toString()
+          index.toString() + (index % 3).toString()
         }
         ItemSeparatorComponent={() => <View style={appStyles.separator} />}
-        numColumns={2}
+        numColumns={3}
       />
     </View>
   );
