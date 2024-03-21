@@ -8,7 +8,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import appStyles from "./styles/appStyles";
+import appStyles from "./styles";
 
 export default function App() {
   const [product, setProduct] = useState({
