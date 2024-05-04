@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { FlatList, Text, View } from "react-native";
 import HeaderComponent from "./header";
 import appStyles from "./styles";
-import { Icon } from "@rneui/themed";
 import { Input, Button } from "@rneui/themed";
+import Toast from 'react-native-toast-message';
 
 export default function App() {
   const [product, setProduct] = useState({
@@ -14,7 +14,21 @@ export default function App() {
   const [items, setItems] = useState([]);
 
   const saveItem = () => {
-    push(ref(database, "items/"), product);
+    push(ref(database, "items/"), product)
+      .then(() => {
+        console.log('Item added successfully');
+        showToast('success', 'Item added successfully');
+      })
+      .catch((error) => {
+        console.error('Error adding item:', error);
+        showToast('error', 'Failed to add item');
+      });
+  };
+  const showToast = (type, message) => {
+    Toast.show({
+      type: type,
+      text1: message,
+    });
   };
 
   useEffect(() => {
@@ -101,6 +115,8 @@ export default function App() {
         ItemSeparatorComponent={() => <View style={appStyles.separator} />}
         numColumns={3}
       />
+       
     </View>
   );
+  
 }
